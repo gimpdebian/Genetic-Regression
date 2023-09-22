@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Genetic Regression Demo</title>
+</head>
+<body>
+<h1>Genetic Regression Demo</h1>
+
+<input type="number" id="x" placeholder="Enter x">
+<input type="number" id="y" placeholder="Enter y">
+<button type="button" onclick="predict()">Predict z</button>
+<output id="z"></output>
+
+<script src="genetic_regression.py"></script>
+
+<script>
+// This function uses the genetic regression program to predict z
+function predict() {
+  // Get the input values
+  var x = parseFloat(document.getElementById("x").value);
+  var y = parseFloat(document.getElementById("y").value);
+
+  // Create a new genetic regression object
+  var geneticRegression = new GeneticRegression(100, 0.1, 0.5);
+
+  // Evolve the algorithm
+  var bestGene = geneticRegression.evolve([x, y], [0], 100);
+
+  // Convert the best gene to an equation
+  var equation = chromosomeToEquation(bestGene.chromosome);
+
+  // Calculate the predicted value of z
+  var z = equation([x, y]);
+
+  // Display the predicted value of z
+  document.getElementById("z").innerHTML = z;
+}
+
+// This function converts a chromosome to an equation
+function chromosomeToEquation(chromosome) {
+  var equation = "";
+  for (var i = 0; i < chromosome.length; i++) {
+    equation += chromosome[i];
+  }
+
+  return eval(equation);
+}
+</script>
+</body>
+</html>
